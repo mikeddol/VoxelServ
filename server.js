@@ -4,17 +4,15 @@
 	var http = require('http').Server(app);
 	var io = require('socket.io')(http);
 
-	app.get('/', function(req, res){
-		res.sendFile(__dirname + '/index.html');
-	});
-
 	io.on('connection', function(socket) {
-		console.log('a user connected');
-		socket.broadcast.emit('hi');
+		console.log('a user connected', socket.id);
 
-		socket.on('chat message', function(msg){
-			io.emit('chat message', msg);
-			console.log('message: ', msg);
+		socket.on('hello', function(data) {
+			console.log(data.name + '  said \'hello\'');
+
+			socket.emit('welcome', {
+				message: 'welcome ' + data.name
+			});
 		});
 
 		socket.on('disconnect', function() {
