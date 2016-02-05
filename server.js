@@ -4,19 +4,23 @@
 	var http = require('http').Server(app);
 	var io = require('socket.io')(http);
 
+	var game = require('./game');
+	var user = require('./user');
+	// the app might need to have allow-origin headers??
+
 	io.on('connection', function(socket) {
-		console.log('a user connected', socket.id);
+		console.log('a user connected ', socket.id);
 
-		socket.on('hello', function(data) {
-			console.log(data.name + '  said \'hello\'');
+		socket.on('user_join', addUser);
 
-			socket.emit('welcome', {
-				message: 'welcome ' + data.name
-			});
-		});
+		console.log(JSON.stringify(game, 2, null));
+
+		io.emit('user_join', getGame());
 
 		socket.on('disconnect', function() {
-			console.log('user disconnected');
+			console.log('user disconnected'); // Needs some edit
+			removeUser(socket.id);
+			updateOnline();
 		});
 
 		function addUser(usr) {
