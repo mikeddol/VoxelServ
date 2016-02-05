@@ -9,5 +9,5 @@ module.exports = {
 		timeCurrent: 0,
 		timeEnd: 0
 	},
-	full: false
+	full: 4
 };
