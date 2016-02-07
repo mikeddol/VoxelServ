@@ -47,7 +47,7 @@
 		}
 
 		function isFull() {
-			return game.user_manager.online === game.full;
+			return game.user_manager.online === game.maxSize;
 		}
 
 		function refuseConnection() {
