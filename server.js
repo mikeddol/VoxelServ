@@ -8,6 +8,13 @@
 	var user = require('./user');
 	// the app might need to have allow-origin headers??
 
+	var colour = {
+		'black': '',
+		'red': '',
+		'blue': '',
+		'green': ''
+	};
+
 	io.on('connection', function(socket) {
 		// TODO: Remember to log stuff
 		socket.on('request_join', addUser);
@@ -18,18 +25,30 @@
 			updateOnline();
 		});
 
-		function addUser(usr) {
-			if (!isFull()) {
+		function addUser() {
+			var color = getColour(socket.id);
+			if (!isFull() && color) {
 				game.user_manager.users.push({
 					id: socket.id,
-					color: usr.color
+					color: color
 				});
 				updateOnline();
 				console.log(JSON.stringify(game, 2, null));
+				socket.emit('accept_join', color);
 				io.emit('user_joined', getUsers());
 			} else {
 				socket.emit('refuse_join', refuseConnection());
 			}
+		}
+
+		function getColour(id) {
+			for (var c in colour) {
+				if (colour[c] === "") {
+					colour[c] = id;
+					return c;
+				}
+			}
+			return "";
 		}
 
 		function removeUser(id) {
