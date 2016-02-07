@@ -9,5 +9,5 @@ module.exports = {
 		timeCurrent: 0,
 		timeEnd: 0
 	},
-	full: 4
+	maxSize: 4
 };
