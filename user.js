@@ -1,5 +1,6 @@
 module.exports = {
 	id: "",
+	socketid: "",
 	color: "",
 	kills: 0,
 	deaths: 0,
