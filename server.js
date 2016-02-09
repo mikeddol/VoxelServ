@@ -35,7 +35,7 @@
 				updateOnline();
 				console.log(JSON.stringify(game, 2, null));
 				socket.emit('accept_join', color);
-				io.emit('user_joined', getUsers());
+				io.emit('user_update', getUsers());
 			} else {
 				socket.emit('refuse_join', refuseConnection());
 			}
@@ -64,6 +64,7 @@
 				}
 			}
 			updateOnline();
+			io.emit('user_update', getUsers());
 			console.log(JSON.stringify(game, 2, null));
 		}
 
