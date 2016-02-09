@@ -57,6 +57,12 @@
 					return user;
 				}
 			});
+			for(var c in colour) {
+				if(colour[c] === id) {
+					colour[c] = "";
+					break;
+				}
+			}
 			updateOnline();
 			console.log(JSON.stringify(game, 2, null));
 		}
