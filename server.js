@@ -26,6 +26,8 @@
 			updateOnline();
 		});
 
+		socket.on('player_update', playerUpdate);
+
 		function addUser() {
 			var color = getColour(socket.id);
 			var newUser = null;
@@ -85,6 +87,10 @@
 				status: "Error",
 				msg: "Game full!"
 			};
+		}
+
+		function playerUpdate(data) {
+			console.log(JSON.stringify(data, 2, null));
 		}
 
 		function getGame() {
