@@ -3,6 +3,7 @@
 	var app = require('express')();
 	var http = require('http').Server(app);
 	var io = require('socket.io')(http);
+	var uuid = require('uuid');
 
 	var game = require('./game');
 	var user = require('./user');
@@ -27,14 +28,17 @@
 
 		function addUser() {
 			var color = getColour(socket.id);
+			var newUser = null;
 			if (!isFull() && color) {
-				game.user_manager.users.push({
-					id: socket.id,
+				newUser = {
+					id: uuid.v4(),
+					socketid: socket.id,
 					color: color
-				});
+				};
+				game.user_manager.users.push(newUser);
 				updateOnline();
 				console.log(JSON.stringify(game, 2, null));
-				socket.emit('accept_join', color);
+				socket.emit('accept_join', newUser);
 				io.emit('user_update', getUsers());
 			} else {
 				socket.emit('refuse_join', refuseConnection());
@@ -53,12 +57,12 @@
 
 		function removeUser(id) {
 			game.user_manager.users = game.user_manager.users.filter(function(user) {
-				if (user.id !== id) {
+				if (user.socketid !== id) {
 					return user;
 				}
 			});
-			for(var c in colour) {
-				if(colour[c] === id) {
+			for (var c in colour) {
+				if (colour[c] === id) {
 					colour[c] = "";
 					break;
 				}
