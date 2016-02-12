@@ -30,18 +30,23 @@
 
 		function addUser() {
 			var color = getColour(socket.id);
-			var newUser = {};
+			var newUser = null;
 			if (!isFull() && color) {
 				newUser = {
-					id: uuid.v4(),
+					uuid: uuid.v4(),
 					socketid: socket.id,
-					color: color
+					color: color,
+					kills: 0,
+					deaths: 0,
+					pos: null,
+					rot: null
 				};
-				game.user_manager.users[newUser.socketid] = newUser;
+				game.user_manager.users.push(newUser);
+
 				updateOnline();
 				console.log(JSON.stringify(game, 2, null));
 				socket.emit('accept_join', newUser);
-				io.emit('user_update', getUsersArr());
+				io.emit('user_update', getUsers());
 			} else {
 				socket.emit('refuse_join', refuseConnection());
 			}
@@ -58,9 +63,11 @@
 		}
 
 		function removeUser(id) {
-			if(!game.user_manager.users[id])
-				return;
-			delete game.user_manager.users[id];
+			game.user_manager.users = game.user_manager.users.filter(function(user) {
+				if (user.socketid !== id) {
+					return user;
+				}
+			});
 			for (var c in colour) {
 				if (colour[c] === id) {
 					colour[c] = "";
@@ -68,12 +75,12 @@
 				}
 			}
 			updateOnline();
-			io.emit('user_update', getUsersArr());
+			io.emit('user_update', getUsers());
 			console.log(JSON.stringify(game, 2, null));
 		}
 
 		function updateOnline() {
-			game.user_manager.online = Object.keys(game.user_manager.users).length;
+			game.user_manager.online = game.user_manager.users.length;
 		}
 
 		function isFull() {
@@ -88,19 +95,20 @@
 		}
 
 		function playerUpdate(data) {
-			console.log(JSON.stringify(data, 2, null));
+			for (var u in game.user_manager.users) {
+				if (game.user_manager.users[u].uuid === data.uuid) {
+					game.user_manager.users[u] = data;
+				}
+			}
+			io.emit('user_update', getUsers());
 		}
 
 		function getGame() {
 			return game;
 		}
 
-		function getUsersObj() {
+		function getUsers() {
 			return game.user_manager.users;
-		}
-
-		function getUsersArr() {
-			return Object.keys(game.user_manager.users).map(function(key){return game.user_manager.users[key];});
 		}
 	});
 

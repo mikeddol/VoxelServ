@@ -1,7 +1,7 @@
 module.exports = {
 	id: "",
 	user_manager: {
-		users: {},
+		users: [],
 		online: 0
 	},
 	time: {
