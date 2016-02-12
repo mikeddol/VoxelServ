@@ -30,14 +30,14 @@
 
 		function addUser() {
 			var color = getColour(socket.id);
-			var newUser = null;
+			var newUser = {};
 			if (!isFull() && color) {
 				newUser = {
 					id: uuid.v4(),
 					socketid: socket.id,
 					color: color
 				};
-				game.user_manager.users.push(newUser);
+				game.user_manager.users[newUser.socketid] = newUser;
 				updateOnline();
 				console.log(JSON.stringify(game, 2, null));
 				socket.emit('accept_join', newUser);
@@ -58,11 +58,9 @@
 		}
 
 		function removeUser(id) {
-			game.user_manager.users = game.user_manager.users.filter(function(user) {
-				if (user.socketid !== id) {
-					return user;
-				}
-			});
+			if(!game.user_manager.users[id])
+				return;
+			delete game.user_manager.users[id];
 			for (var c in colour) {
 				if (colour[c] === id) {
 					colour[c] = "";
@@ -75,7 +73,7 @@
 		}
 
 		function updateOnline() {
-			game.user_manager.online = game.user_manager.users.length;
+			game.user_manager.online = Object.keys(game.user_manager.users).length;
 		}
 
 		function isFull() {
@@ -95,10 +93,6 @@
 
 		function getGame() {
 			return game;
-		}
-
-		function getUsers() {
-			return game.user_manager.users;
 		}
 
 		function getUsers() {
