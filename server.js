@@ -41,7 +41,7 @@
 				updateOnline();
 				console.log(JSON.stringify(game, 2, null));
 				socket.emit('accept_join', newUser);
-				io.emit('user_update', getUsers());
+				io.emit('user_update', getUsersArr());
 			} else {
 				socket.emit('refuse_join', refuseConnection());
 			}
@@ -68,7 +68,7 @@
 				}
 			}
 			updateOnline();
-			io.emit('user_update', getUsers());
+			io.emit('user_update', getUsersArr());
 			console.log(JSON.stringify(game, 2, null));
 		}
 
@@ -95,8 +95,12 @@
 			return game;
 		}
 
-		function getUsers() {
+		function getUsersObj() {
 			return game.user_manager.users;
+		}
+
+		function getUsersArr() {
+			return Object.keys(game.user_manager.users).map(function(key){return game.user_manager.users[key];});
 		}
 	});
 
