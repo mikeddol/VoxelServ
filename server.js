@@ -38,8 +38,20 @@
 					color: color,
 					kills: 0,
 					deaths: 0,
-					pos: null,
-					rot: null
+					pos: {
+						"data": {
+							"0": 0,
+							"1": 0,
+							"2": 0
+						}
+					},
+					rot: {
+						"data": {
+							"0": 0,
+							"1": 0,
+							"2": 0
+						}
+					}
 				};
 				game.user_manager.users.push(newUser);
 
