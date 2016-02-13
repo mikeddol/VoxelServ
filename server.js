@@ -107,7 +107,7 @@
 		}
 
 		function playerUpdate(data) {
-			for (var u in game.user_manager.users) {
+			for (var u = 0; u < game.user_manager.users.length; u++) {
 				if (game.user_manager.users[u].uuid === data.uuid) {
 					game.user_manager.users[u] = data;
 				}
