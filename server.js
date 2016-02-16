@@ -87,7 +87,7 @@
 				}
 			}
 			updateOnline();
-			io.emit('user_update', getUsers());
+			socket.broadcast.emit('user_update', getUsers());
 			console.log(JSON.stringify(game, 2, null));
 		}
 
