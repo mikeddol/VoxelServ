@@ -1,89 +1,45 @@
 (function() {
 	"use strict";
+	// the app might need to have allow-origin headers??
 	var app = require('express')();
 	var http = require('http').Server(app);
 	var io = require('socket.io')(http);
-	var uuid = require('uuid');
 
-	var game = require('./game');
+	var Game = require('./game');
 	var User = require('./user');
-	// the app might need to have allow-origin headers??
 
-	var colour = {
-		'black': '',
-		'red': '',
-		'blue': '',
-		'green': ''
-	};
+	// FIXME: fix game creation
+	var game = new Game({
+		id: 'test'
+	});
 
 	io.on('connection', function(socket) {
 		// TODO: Remember to log stuff
-		socket.on('request_join', addUser);
+		socket.on('request_join', registerUser);
 
 		socket.on('disconnect', function() {
 			console.log('user disconnected'); // Needs some edit
-			removeUser(socket.id);
-			updateOnline();
+			unregisterUser(socket.id);
 		});
 
-		socket.on('player_update', playerUpdate);
+		socket.on('player_update', updateUser);
 
-		function addUser() {
-			var color = getColour(socket.id);
-			var newUser = null;
-			if (!isFull() && color) {
-				var socketid = socket.id;
-				newUser = new User({
-					uuid: uuid.v4(),
-					socketid: socketid,
-					color: color
-				});
-				game.user_manager.users.push(newUser);
-
-				updateOnline();
+		function registerUser() {
+			var newUser = game.addUser(socket.id);
+			if (newUser) {
 				console.log(JSON.stringify(game, 2, null));
 				socket.emit('accept_join', newUser);
-				io.emit('user_update', getUsers());
+				io.emit('user_update', game.getUsers());
 			} else {
 				socket.emit('refuse_join', refuseConnection());
 			}
 		}
 
-		function getColour(id) {
-			for (var c in colour) {
-				if (colour[c] === "") {
-					colour[c] = id;
-					return c;
-				}
+		function unregisterUser(id) {
+			if (game.removeUser(id)) {
+				socket.broadcast.emit('user_update', game.getUsers());
+				console.log(JSON.stringify(game, 2, null));
 			}
-			return "";
-		}
-
-		function removeUser(id) {
-			for (var u = 0; u < game.user_manager.users.length; u++) {
-				if (game.user_manager.users[u].socketid === id) {
-					delete game.user_manager.users[u];
-					game.user_manager.users.splice(u, 1);
-					break;
-				}
-			}
-			for (var c in colour) {
-				if (colour[c] === id) {
-					colour[c] = "";
-					break;
-				}
-			}
-			updateOnline();
-			socket.broadcast.emit('user_update', getUsers());
-			console.log(JSON.stringify(game, 2, null));
-		}
-
-		function updateOnline() {
-			game.user_manager.online = game.user_manager.users.length;
-		}
-
-		function isFull() {
-			return game.user_manager.online === game.maxSize;
 		}
 
 		function refuseConnection() {
@@ -93,22 +49,10 @@
 			};
 		}
 
-		function playerUpdate(data) {
-			for (var u = 0; u < game.user_manager.users.length; u++) {
-				if (game.user_manager.users[u].uuid === data.uuid) {
-					game.user_manager.users[u].update(data);
-					break;
-				}
+		function updateUser(data) {
+			if (game.updateUser(data)) {
+				io.emit('user_update', game.getUsers());
 			}
-			io.emit('user_update', getUsers());
-		}
-
-		function getGame() {
-			return game;
-		}
-
-		function getUsers() {
-			return game.user_manager.users;
 		}
 	});
 
