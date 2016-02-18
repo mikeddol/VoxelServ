@@ -6,7 +6,7 @@
 	var uuid = require('uuid');
 
 	var game = require('./game');
-	var user = require('./user');
+	var User = require('./user');
 	// the app might need to have allow-origin headers??
 
 	var colour = {
@@ -32,27 +32,12 @@
 			var color = getColour(socket.id);
 			var newUser = null;
 			if (!isFull() && color) {
-				newUser = {
+				var socketid = socket.id;
+				newUser = new User({
 					uuid: uuid.v4(),
-					socketid: socket.id,
-					color: color,
-					kills: 0,
-					deaths: 0,
-					pos: {
-						"data": {
-							"0": 0,
-							"1": 0,
-							"2": 0
-						}
-					},
-					rot: {
-						"data": {
-							"0": 0,
-							"1": 0,
-							"2": 0
-						}
-					}
-				};
+					socketid: socketid,
+					color: color
+				});
 				game.user_manager.users.push(newUser);
 
 				updateOnline();
@@ -75,11 +60,13 @@
 		}
 
 		function removeUser(id) {
-			game.user_manager.users = game.user_manager.users.filter(function(user) {
-				if (user.socketid !== id) {
-					return user;
+			for (var u = 0; u < game.user_manager.users.length; u++) {
+				if (game.user_manager.users[u].socketid === id) {
+					delete game.user_manager.users[u];
+					game.user_manager.users.splice(u, 1);
+					break;
 				}
-			});
+			}
 			for (var c in colour) {
 				if (colour[c] === id) {
 					colour[c] = "";
@@ -109,7 +96,8 @@
 		function playerUpdate(data) {
 			for (var u = 0; u < game.user_manager.users.length; u++) {
 				if (game.user_manager.users[u].uuid === data.uuid) {
-					game.user_manager.users[u] = data;
+					game.user_manager.users[u].update(data);
+					break;
 				}
 			}
 			io.emit('user_update', getUsers());
