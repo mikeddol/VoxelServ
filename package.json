@@ -1,0 +1,33 @@
+{
+  "name": "voxelserv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "flags": "^0.1.3",
+    "socket.io": "^1.4.5",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akagetsu/VoxelServ.git"
+  },
+  "keywords": [
+    "nodejs",
+    "playcanvas",
+    "socketio",
+    "game"
+  ],
+  "author": "Mike Dolha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akagetsu/VoxelServ/issues"
+  },
+  "homepage": "https://github.com/akagetsu/VoxelServ#readme"
+}
