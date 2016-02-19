@@ -4,11 +4,11 @@ var uuid = require('uuid');
 function Game(data) {
 	this.id = data.id;
 	this.time = {
-			timeStarted: data.timeStarted || Date.now(),
-			timeCurrent: data.timeStarted || Date.now(),
-			timeEnd: data.timeEnd || Date.now()
-		},
-		this.users = data.users || [];
+		timeStarted: data.timeStarted || Date.now(),
+		timeCurrent: data.timeStarted || Date.now(),
+		timeEnd: data.timeEnd || Date.now()
+	};
+	this.users = data.users || [];
 	this.online = data.online || 0;
 	this.maxSize = data.maxSize || 4;
 }
@@ -27,7 +27,7 @@ Game.prototype.addUser = function addUser(socketid) {
 	} else {
 		return null;
 	}
-}
+};
 
 Game.prototype.removeUser = function removeUser(socketid) {
 	for (var u = 0; u < this.users.length; u++) {
@@ -40,23 +40,23 @@ Game.prototype.removeUser = function removeUser(socketid) {
 		}
 	}
 	return false;
-}
+};
 
 Game.prototype.isFull = function isFull() {
 	return this.online === this.maxSize;
-}
+};
 
 Game.prototype.updateOnline = function updateOnline() {
 	this.online = this.users.length;
-}
+};
 
 Game.prototype.getGame = function getGame() {
 	return this;
-}
+};
 
 Game.prototype.getUsers = function getUsers() {
 	return this.users;
-}
+};
 
 Game.prototype.updateUser = function updateUser(user) {
 	for (var u = 0; u < this.users.length; u++) {
@@ -66,7 +66,7 @@ Game.prototype.updateUser = function updateUser(user) {
 		}
 	}
 	return false;
-}
+};
 
 var colour = {
 	'black': '',
