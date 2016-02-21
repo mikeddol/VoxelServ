@@ -37,11 +37,12 @@ Game.prototype.addUser = function addUser(socketid) {
 Game.prototype.removeUser = function removeUser(socketid) {
 	for (var u = 0; u < this.users.length; u++) {
 		if (this.users[u].socketid === socketid) {
+			var uuid = this.users[u].uuid;
 			delete this.users[u];
 			this.users.splice(u, 1);
-			freeColour(socketid);
+			this.freeColour(socketid);
 			this.updateOnline();
-			return true;
+			return uuid;
 		}
 	}
 	return false;
