@@ -2,6 +2,7 @@ function User(data) {
 	this.uuid = data.uuid;
 	this.socketid = data.socketid;
 	this.color = data.color;
+	this.gameId = data.gameId;
 	this.kills = data.kills || 0;
 	this.deaths = data.deaths || 0;
 	this.pos = data.pos || null;
