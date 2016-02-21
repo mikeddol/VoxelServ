@@ -7,6 +7,11 @@ function Game(data) {
 		timeStarted: data.timeStarted || Date.now(),
 		timeCurrent: data.timeStarted || Date.now(),
 		timeEnd: data.timeEnd || Date.now()
+	this.colours = {
+		'black': '',
+		'red': '',
+		'blue': '',
+		'green': ''
 	};
 	this.users = data.users || [];
 	this.online = data.online || 0;
@@ -68,27 +73,20 @@ Game.prototype.updateUser = function updateUser(user) {
 	return false;
 };
 
-var colour = {
-	'black': '',
-	'red': '',
-	'blue': '',
-	'green': ''
-};
-
-function getColour(id) {
-	for (var c in colour) {
-		if (colour[c] === "") {
-			colour[c] = id;
+Game.prototype.getColour = function getColour(id) {
+	for (var c in this.colours) {
+		if (this.colours[c] === "") {
+			this.colours[c] = id;
 			return c;
 		}
 	}
 	return "";
 }
 
-function freeColour(id) {
-	for (var c in colour) {
-		if (colour[c] === id) {
-			colour[c] = "";
+Game.prototype.freeColour = function freeColour(id) {
+	for (var c in this.colours) {
+		if (this.colours[c] === id) {
+			this.colours[c] = "";
 			break;
 		}
 	}
