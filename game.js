@@ -4,27 +4,29 @@ var uuid = require('uuid');
 function Game(data) {
 	this.id = uuid.v1();
 	this.time = {
-		timeStarted: data.timeStarted || Date.now(),
-		timeCurrent: data.timeStarted || Date.now(),
-		timeEnd: data.timeEnd || Date.now()
+		timeStarted: Date.now(),
+		timeEnd: Date.now()
+	};
+	this.users = [];
+	this.online = 0;
+	this.maxSize = 4;
 	this.colours = {
 		'black': '',
 		'red': '',
 		'blue': '',
 		'green': ''
 	};
-	this.users = data.users || [];
-	this.online = data.online || 0;
-	this.maxSize = data.maxSize || 4;
 }
 
 Game.prototype.addUser = function addUser(socketid) {
-	var color = getColour(socketid);
+	var color = this.getColour(socketid);
 	if (!this.isFull() && color) {
+		var id = this.id;
 		var newUser = new User({
 			uuid: uuid.v4(),
 			socketid: socketid,
-			color: color
+			color: color,
+			gameId: id
 		});
 		this.users.push(newUser);
 		this.updateOnline();
