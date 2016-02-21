@@ -6,44 +6,67 @@
 	var io = require('socket.io')(http);
 	var flags = require('flags');
 
-	var Game = require('./game');
-	var User = require('./user');
+	var GameManager = require('./game_manager');
 
 	// Set up flags here (for debugging logger atm)
 	flags.defineBoolean('debug', false);
 	flags.parse();
+	var debug = flags.get('debug');
 
-	// FIXME: fix game creation
-	var game = new Game({
-		id: 'test'
-	});
+	var gameMan = new GameManager();
 
 	io.on('connection', function(socket) {
 		// TODO: Remember to log stuff
 		socket.on('request_join', registerUser);
 
 		socket.on('disconnect', function() {
-			console.log('user disconnected'); // Needs some edit
 			unregisterUser(socket.id);
 		});
 
 		socket.on('player_update', updateUser);
 
 		function registerUser() {
+			if (debug)
+				console.log("User at socket", socket.id, "is attempting a connection.");
+
+			var game = gameMan.findAvailable();
+			if (!game) {
+				game = gameMan.createGame();
+				if (debug)
+					console.log("Created new game", game.id, "in gameMan.");
+			} else {
+				if (debug)
+					console.log("Found game", game.id, "in gameMan.");
+			}
 			var newUser = game.addUser(socket.id);
 			if (newUser) {
-				console.log(JSON.stringify(game, 2, null));
+				if (debug)
+					console.log("User at socket", socket.id, "successfully added to game.");
+				gameMan.addUser(newUser);
+				socket.join(newUser.gameId);
 				socket.emit('accept_join', newUser);
-				io.emit('user_update', game.getUsers());
+				updateUser(newUser);
 			} else {
+				if (debug)
+					console.log("User at socket", socket.id, "could not be added to the game.");
 				socket.emit('refuse_join', refuseConnection());
 			}
 		}
 
 		function unregisterUser(id) {
-			if (game.removeUser(id)) {
-				socket.broadcast.emit('user_update', game.getUsers());
-				console.log(JSON.stringify(game, 2, null));
+			var game = gameMan.getUserGame(id);
+			if (!game && debug) {
+				console.log("User can't disconnect from nonexistent game.");
+			} else if (game) {
+				var uuid = game.removeUser(id);
+				if (uuid) {
+					if (debug)
+						console.log("User at socket", id, "disconnected.");
+					socket.broadcast.to(game.id).emit('remove_user', uuid);
+				} else {
+					if (debug)
+						console.log("User", id, "could not be removed from game.");
+				}
 			}
 		}
 
@@ -54,9 +77,12 @@
 			};
 		}
 
-		function updateUser(data) {
-			if (game.updateUser(data)) {
-				io.emit('user_update', game.getUsers());
+		function updateUser(user) {
+			var game = gameMan.findGame(user.gameId);
+			if (game) {
+				if (game.updateUser(user)) {
+					socket.broadcast.to(game.id).emit('user_update', game.getUsers());
+				}
 			}
 		}
 	});
