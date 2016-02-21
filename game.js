@@ -2,7 +2,7 @@ var User = require('./user');
 var uuid = require('uuid');
 
 function Game(data) {
-	this.id = data.id;
+	this.id = uuid.v1();
 	this.time = {
 		timeStarted: data.timeStarted || Date.now(),
 		timeCurrent: data.timeStarted || Date.now(),
