@@ -1,6 +1,7 @@
 (function() {
 	"use strict";
-	// the app might need to have allow-origin headers??
+	// the app might need to have allow-origin headers
+	// once it sits on a server. Maybe.
 	var app = require('express')();
 	var http = require('http').Server(app);
 	var io = require('socket.io')(http);
@@ -16,7 +17,6 @@
 	var gameMan = new GameManager();
 
 	io.on('connection', function(socket) {
-		// TODO: Remember to log stuff
 		socket.on('request_join', registerUser);
 
 		socket.on('disconnect', function() {
