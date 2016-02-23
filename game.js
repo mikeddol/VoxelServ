@@ -11,7 +11,7 @@ function Game(data) {
 	this.online = 0;
 	this.maxSize = 4;
 	this.colours = {
-		'black': '',
+		'yellow': '',
 		'red': '',
 		'blue': '',
 		'green': ''
