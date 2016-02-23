@@ -7,7 +7,7 @@ function Game(data) {
 		timeStarted: Date.now(),
 		timeEnd: Date.now()
 	};
-	this.users = [];
+	this.users = {};
 	this.online = 0;
 	this.maxSize = 4;
 	this.colours = {
@@ -28,7 +28,8 @@ Game.prototype.addUser = function addUser(socketid) {
 			color: color,
 			gameId: id
 		});
-		this.users.push(newUser);
+		// this.users.push(newUser);
+		this.users[newUser.uuid] = newUser;
 		this.updateOnline();
 		return newUser;
 	} else {
@@ -37,11 +38,9 @@ Game.prototype.addUser = function addUser(socketid) {
 };
 
 Game.prototype.removeUser = function removeUser(socketid) {
-	for (var u = 0; u < this.users.length; u++) {
-		if (this.users[u].socketid === socketid) {
-			var uuid = this.users[u].uuid;
-			delete this.users[u];
-			this.users.splice(u, 1);
+	for (var uuid in this.users) {
+		if (this.users[uuid].socketid === socketid) {
+			delete this.users[uuid];
 			this.freeColour(socketid);
 			this.updateOnline();
 			return uuid;
@@ -55,7 +54,7 @@ Game.prototype.isFull = function isFull() {
 };
 
 Game.prototype.updateOnline = function updateOnline() {
-	this.online = this.users.length;
+	this.online = Object.keys(this.users).length;
 };
 
 Game.prototype.getGame = function getGame() {
@@ -67,11 +66,9 @@ Game.prototype.getUsers = function getUsers() {
 };
 
 Game.prototype.updateUser = function updateUser(user) {
-	for (var u = 0; u < this.users.length; u++) {
-		if (this.users[u].uuid === user.uuid) {
-			this.users[u].update(user);
-			return true;
-		}
+	if (this.users[user.uuid]) {
+		this.users[user.uuid].update(user);
+		return true;
 	}
 	return false;
 };
