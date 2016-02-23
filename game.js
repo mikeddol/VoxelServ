@@ -28,7 +28,6 @@ Game.prototype.addUser = function addUser(socketid) {
 			color: color,
 			gameId: id
 		});
-		// this.users.push(newUser);
 		this.users[newUser.uuid] = newUser;
 		this.updateOnline();
 		return newUser;

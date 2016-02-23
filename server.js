@@ -25,19 +25,28 @@
 
 		socket.on('player_update', updateUser);
 
-		function registerUser() {
+		function registerUser(data) {
 			if (debug)
 				console.log("User at socket", socket.id, "is attempting a connection.");
 
-			var game = gameMan.findAvailable();
-			if (!game) {
-				game = gameMan.createGame();
-				if (debug)
-					console.log("Created new game", game.id, "in gameMan.");
-			} else {
-				if (debug)
-					console.log("Found game", game.id, "in gameMan.");
+			var game = {};
+			if (data && data.gameId) {
+				game = gameMan.findGame(data.gameId);
+				if (debug && game)
+					console.log("Reconnected user at socket", socket.id, "to game", data.gameId + ".");
+			} else if (!game || !data) {
+				game = gameMan.findAvailable();
+
+				if (!game) {
+					game = gameMan.createGame();
+					if (debug)
+						console.log("Created new game", game.id, "in gameMan.");
+				} else {
+					if (debug)
+						console.log("Found game", game.id, "in gameMan.");
+				}
 			}
+
 			var newUser = game.addUser(socket.id);
 			if (newUser) {
 				if (debug)
