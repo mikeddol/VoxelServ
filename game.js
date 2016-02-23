@@ -84,7 +84,7 @@ Game.prototype.getColour = function getColour(id) {
 		}
 	}
 	return "";
-}
+};
 
 Game.prototype.freeColour = function freeColour(id) {
 	for (var c in this.colours) {
@@ -93,6 +93,6 @@ Game.prototype.freeColour = function freeColour(id) {
 			break;
 		}
 	}
-}
+};
 
 module.exports = Game;

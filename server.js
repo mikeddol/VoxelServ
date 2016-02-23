@@ -41,14 +41,14 @@
 			var newUser = game.addUser(socket.id);
 			if (newUser) {
 				if (debug)
-					console.log("User at socket", socket.id, "successfully added to game.");
+					console.log("User at socket", socket.id, "successfully added to game", game.id + ".");
 				gameMan.addUser(newUser);
 				socket.join(newUser.gameId);
 				socket.emit('accept_join', newUser);
 				updateUser(newUser);
 			} else {
 				if (debug)
-					console.log("User at socket", socket.id, "could not be added to the game.");
+					console.log("User at socket", socket.id, "could not be added to the game", game.id + ".");
 				socket.emit('refuse_join', refuseConnection());
 			}
 		}
@@ -61,11 +61,11 @@
 				var uuid = game.removeUser(id);
 				if (uuid) {
 					if (debug)
-						console.log("User at socket", id, "disconnected.");
+						console.log("User at socket", id, "disconnected from game", game.id + ".");
 					socket.broadcast.to(game.id).emit('remove_user', uuid);
 				} else {
 					if (debug)
-						console.log("User", id, "could not be removed from game.");
+						console.log("User", id, "could not be removed from game", game.id + ".");
 				}
 			}
 		}

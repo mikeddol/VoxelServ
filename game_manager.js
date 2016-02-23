@@ -9,7 +9,7 @@ GameManager.prototype.createGame = function addGame() {
 	var game = new Game();
 	this.games.push(game);
 	return game;
-}
+};
 
 GameManager.prototype.endGame = function endGame(id) {
 	for (var u = 0; u < this.games.length; u++) {
@@ -19,17 +19,17 @@ GameManager.prototype.endGame = function endGame(id) {
 		}
 	}
 	return false;
-}
+};
 
 GameManager.prototype.addUser = function addUser(user) {
 	this.users[user.socketid] = user;
-}
+};
 
 GameManager.prototype.getUserGame = function getUserGame(socketid) {
 	if(this.users[socketid])
 		return this.findGame(this.users[socketid].gameId);
 	return false;
-}
+};
 
 GameManager.prototype.removeUser = function removeUser(socketid) {
 	if(this.users[socketid]){
@@ -37,7 +37,7 @@ GameManager.prototype.removeUser = function removeUser(socketid) {
 		return true;
 	}
 	return false;
-}
+};
 
 GameManager.prototype.findGame = function findGame(id) {
 	for (var u = 0; u < this.games.length; u++) {
@@ -46,7 +46,7 @@ GameManager.prototype.findGame = function findGame(id) {
 		}
 	}
 	return false;
-}
+};
 
 GameManager.prototype.findAvailable = function findAvailable() {
 	for (var u = 0; u < this.games.length; u++) {
@@ -55,6 +55,6 @@ GameManager.prototype.findAvailable = function findAvailable() {
 		}
 	}
 	return false;
-}
+};
 
 module.exports = GameManager;
