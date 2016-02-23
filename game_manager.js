@@ -25,7 +25,7 @@ GameManager.prototype.addUser = function addUser(user) {
 
 GameManager.prototype.getUserGame = function getUserGame(socketid) {
 	if(this.users[socketid])
-		return this.games(this.users[socketid].gameId);
+		return this.games[this.users[socketid].gameId];
 	return false;
 };
 
