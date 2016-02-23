@@ -1,22 +1,20 @@
 var Game = require('./game');
 
 function GameManager() {
-	this.games = [];
+	this.games = {};
 	this.users = {};
 }
 
 GameManager.prototype.createGame = function addGame() {
 	var game = new Game();
-	this.games.push(game);
+	this.games[game.id] = game;
 	return game;
 };
 
 GameManager.prototype.endGame = function endGame(id) {
-	for (var u = 0; u < this.games.length; u++) {
-		if (this.games[u].id === id) {
-			this.games[u].time.timeEnd = Date.now();
-			return true;
-		}
+	if(this.games[id]) {
+		this.games[id].time.timeEnd = Date.now();
+		return true;
 	}
 	return false;
 };
@@ -27,7 +25,7 @@ GameManager.prototype.addUser = function addUser(user) {
 
 GameManager.prototype.getUserGame = function getUserGame(socketid) {
 	if(this.users[socketid])
-		return this.findGame(this.users[socketid].gameId);
+		return this.games(this.users[socketid].gameId);
 	return false;
 };
 
@@ -40,18 +38,17 @@ GameManager.prototype.removeUser = function removeUser(socketid) {
 };
 
 GameManager.prototype.findGame = function findGame(id) {
-	for (var u = 0; u < this.games.length; u++) {
-		if (this.games[u].id === id) {
-			return this.games[u];
-		}
+	var res = this.games[id];
+	if(res) {
+		return res;
 	}
 	return false;
 };
 
 GameManager.prototype.findAvailable = function findAvailable() {
-	for (var u = 0; u < this.games.length; u++) {
-		if (!this.games[u].isFull()) {
-			return this.games[u];
+	for(var prop in this.games) {
+		if(!this.games[prop].isFull()) {
+			return this.games[prop];
 		}
 	}
 	return false;
