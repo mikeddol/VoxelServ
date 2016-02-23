@@ -46,9 +46,9 @@ GameManager.prototype.findGame = function findGame(id) {
 };
 
 GameManager.prototype.findAvailable = function findAvailable() {
-	for(var prop in this.games) {
-		if(!this.games[prop].isFull()) {
-			return this.games[prop];
+	for(var gameId in this.games) {
+		if(!this.games[gameId].isFull()) {
+			return this.games[gameId];
 		}
 	}
 	return false;
