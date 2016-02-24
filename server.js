@@ -34,11 +34,13 @@
 				game = gameMan.findGame(data.gameId);
 				if (debug && game)
 					console.log("Reconnected user at socket", socket.id, "to game", data.gameId + ".");
-			} else if (!game || !data) {
+			}
+			if (!game || !data) {
 				game = gameMan.findAvailable();
 
 				if (!game) {
 					game = gameMan.createGame();
+
 					if (debug)
 						console.log("Created new game", game.id, "in gameMan.");
 				} else {
