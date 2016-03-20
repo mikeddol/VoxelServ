@@ -7,6 +7,7 @@ function User(data) {
 	this.deaths = data.deaths || 0;
 	this.pos = data.pos || null;
 	this.rot = data.rot || null;
+	this.dead = false;
 }
 
 User.prototype.update = function update(data) {
