@@ -16,6 +16,7 @@ function Game(data) {
 		'blue': '',
 		'green': ''
 	};
+	this.collisionHolder = {};
 }
 
 Game.prototype.addUser = function addUser(socketid) {
@@ -88,6 +89,29 @@ Game.prototype.freeColour = function freeColour(id) {
 			this.colours[c] = "";
 			break;
 		}
+	}
+};
+
+Game.prototype.killUser = function killUser(uuid) {
+	this.users[uuid].dead = true;
+	setTimeout(function() {
+		this.users[uuid].dead = false;
+	}.bind(this), 3000);
+};
+
+Game.prototype.collisionHandler = function collisionHandler(data) {
+	if(!this.collisionHolder[data.p2]) {
+		this.collisionHolder[data.p1] = data;
+	} else {
+		var p1 = this.collisionHolder[data.p2];
+		var p2 = data;
+
+		if(p1.force >= p2.force) {
+			this.killUser(p2.p1);
+		} else {
+			this.killUser(p1.p1);
+		}
+		delete this.collisionHolder[data.p2];
 	}
 };
 
