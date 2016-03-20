@@ -94,7 +94,7 @@
 			var game = gameMan.findGame(user.gameId);
 			if (game) {
 				if (game.updateUser(user)) {
-					socket.broadcast.to(game.id).emit('user_update', game.getUsers());
+					socket.to(game.id).emit('user_update', game.getUsers());
 				}
 			}
 		}
