@@ -102,6 +102,9 @@ Game.prototype.killUser = function killUser(uuid) {
 Game.prototype.collisionHandler = function collisionHandler(data) {
 	if(!this.collisionHolder[data.p2]) {
 		this.collisionHolder[data.p1] = data;
+		setTimeout(function(){
+			delete this.collisionHolder[data.p1];
+		}.bind(this), 200);
 	} else {
 		var p1 = this.collisionHolder[data.p2];
 		var p2 = data;
