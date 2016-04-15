@@ -36,4 +36,8 @@ User.prototype.update = function update(data) {
 	this.pos = data.pos;
 };
 
+User.prototype.setState = function setState(args) {
+	this.state[args.state] = args.val;
+};
+
 module.exports = User;

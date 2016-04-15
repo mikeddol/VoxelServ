@@ -73,6 +73,18 @@ Game.prototype.updateUser = function updateUser(user) {
 	return false;
 };
 
+Game.prototype.setUserState = function setUserState(data) {
+	if (this.users[data.uuid]) {
+		if (data.args.length) {
+			for (var i = 0; i < data.args.length; i++) {
+				this.users[data.uuid].setState(data.args[i]);
+			}
+			return true;
+		}
+	}
+	return false;
+};
+
 Game.prototype.getColour = function getColour(id) {
 	for (var c in this.colours) {
 		if (this.colours[c] === "") {
