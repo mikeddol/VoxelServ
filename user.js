@@ -14,10 +14,6 @@ function User(data) {
 		"rig": false,
 		"jmp": false,
 		"atk": false,
-		"vew": {
-			"dx": 0,
-			"dy": 0
-		},
 		"cam": {
 			"fow": {
 				"x": 0,
