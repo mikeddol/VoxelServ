@@ -100,16 +100,16 @@ Game.prototype.killUser = function killUser(uuid) {
 };
 
 Game.prototype.collisionHandler = function collisionHandler(data) {
-	if(!this.collisionHolder[data.p2]) {
+	if (!this.collisionHolder[data.p2]) {
 		this.collisionHolder[data.p1] = data;
-		setTimeout(function(){
+		setTimeout(function() {
 			delete this.collisionHolder[data.p1];
 		}.bind(this), 200);
 	} else {
 		var p1 = this.collisionHolder[data.p2];
 		var p2 = data;
 
-		if(p1.force >= p2.force) {
+		if (p1.force >= p2.force) {
 			this.killUser(p2.p1);
 		} else {
 			this.killUser(p1.p1);

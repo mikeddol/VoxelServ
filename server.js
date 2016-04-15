@@ -106,7 +106,7 @@
 	});
 
 	http.listen(3000, function() {
-		if(debug)
+		if (debug)
 			console.log('listening on 127.0.0.1:3000');
 	});
 })();
