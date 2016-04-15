@@ -21,6 +21,7 @@ function User(data) {
 		"cam": {
 			"fow": {
 				"x": 0,
+				"y": 0,
 				"z": 0
 			},
 			"rig": {
