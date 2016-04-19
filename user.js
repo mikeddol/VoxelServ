@@ -34,6 +34,7 @@ User.prototype.update = function update(data) {
 	this.deaths = data.deaths;
 	this.state = data.state;
 	this.pos = data.pos;
+	this.dead = data.dead;
 };
 
 User.prototype.setState = function setState(args) {
