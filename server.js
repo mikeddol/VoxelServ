@@ -27,8 +27,6 @@
 
 		socket.on('player_state', updateState);
 
-		socket.on('collision', collision);
-
 		function registerUser(data) {
 			if (debug)
 				console.log("User at socket", socket.id, "is attempting a connection.");
@@ -108,11 +106,6 @@
 					socket.to(game.id).emit('player_state', data);
 				}
 			}
-		}
-
-		function collision(data) {
-			var game = gameMan.findGame(data.game);
-			game.collisionHandler(data);
 		}
 	});
 

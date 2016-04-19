@@ -109,23 +109,6 @@ Game.prototype.killUser = function killUser(uuid) {
 	this.users[uuid].deaths += 1;
 };
 
-Game.prototype.collisionHandler = function collisionHandler(data) {
-	if (!this.collisionHolder[data.p2]) {
-		this.collisionHolder[data.p1] = data;
-		setTimeout(function() {
-			delete this.collisionHolder[data.p1];
-		}.bind(this), 200);
-	} else {
-		var p1 = this.collisionHolder[data.p2];
-		var p2 = data;
-
-		if (p1.force >= p2.force) {
-			this.killUser(p2.p1);
-		} else {
-			this.killUser(p1.p1);
-		}
-		delete this.collisionHolder[data.p2];
-	}
 Game.prototype.rewardUser = function rewardUser(uuid) {
 	this.users[uuid].kills += 1;
 };
