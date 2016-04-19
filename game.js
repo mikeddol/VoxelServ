@@ -106,9 +106,7 @@ Game.prototype.freeColour = function freeColour(id) {
 
 Game.prototype.killUser = function killUser(uuid) {
 	this.users[uuid].dead = true;
-	setTimeout(function() {
-		this.users[uuid].dead = false;
-	}.bind(this), 3000);
+	this.users[uuid].deaths += 1;
 };
 
 Game.prototype.collisionHandler = function collisionHandler(data) {
@@ -128,6 +126,8 @@ Game.prototype.collisionHandler = function collisionHandler(data) {
 		}
 		delete this.collisionHolder[data.p2];
 	}
+Game.prototype.rewardUser = function rewardUser(uuid) {
+	this.users[uuid].kills += 1;
 };
 
 module.exports = Game;
