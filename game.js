@@ -73,6 +73,13 @@ Game.prototype.updateUser = function updateUser(user) {
 	return false;
 };
 
+Game.prototype.updatePosition = function updatePosition(user) {
+	if (this.users[user.uuid]) {
+		this.users[user.uuid].updatePosition(user);
+		return true;
+	}
+	return false;
+};
 Game.prototype.setUserState = function setUserState(data) {
 	if (this.users[data.uuid]) {
 		if (data.args.length) {
