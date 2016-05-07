@@ -80,6 +80,25 @@ Game.prototype.updatePosition = function updatePosition(user) {
 	}
 	return false;
 };
+
+Game.prototype.handleCollision = function handleCollision(data) {
+	if(this.collisionHolder[data.deadId]) {
+		if(data.time - this.collisionHolder[data.deadId].time <= 200) {
+			this.users[data.winId].plusScore();
+			this.users[data.deadId].plusDeath();
+			this.users[data.deadId].kill();
+			delete this.collisionHolder[data.deadId];
+			return true;
+		} else {
+			delete this.collisionHolder[data.deadId];
+			return false;
+		}
+	} else {
+		this.collisionHolder[data.deadId] = data;
+	}
+	return 'waiting';
+};
+
 Game.prototype.setUserState = function setUserState(data) {
 	if (this.users[data.uuid]) {
 		if (data.args.length) {

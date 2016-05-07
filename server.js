@@ -29,6 +29,8 @@
 
 		socket.on('player_state', updateState);
 
+		socket.on('collide', collide);
+
 		function registerUser(data) {
 			if (debug)
 				console.log("User at socket", socket.id, "is attempting a connection.");
@@ -115,6 +117,18 @@
 			if(game) {
 				if(game.setUserState(data)) {
 					socket.to(game.id).emit('player_state', data);
+				}
+			}
+		}
+
+		function collide(data){
+			var game = gameMan.findGame(data.gameId);
+			if(game){
+				var collision = game.handleCollision(data);
+				if(collision === 'waiting') {
+					return;
+				} else if (collision === true) {
+					socket.to(game.id).emit('user_update', game.getUsers());
 				}
 			}
 		}
