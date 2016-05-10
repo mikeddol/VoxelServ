@@ -135,6 +135,10 @@ Game.prototype.killUser = function killUser(uuid) {
 	this.users[uuid].deaths += 1;
 };
 
+Game.prototype.respawnUser = function respawnUser(uuid) {
+	this.users[uuid].dead = false;
+};
+
 Game.prototype.rewardUser = function rewardUser(uuid) {
 	this.users[uuid].kills += 1;
 };

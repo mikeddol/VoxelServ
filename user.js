@@ -41,22 +41,6 @@ User.prototype.updatePosition = function updatePosition(data) {
 	this.pos = data.pos;
 };
 
-User.prototype.plusScore = function plusScore() {
-	this.kills += 1;
-};
-
-User.prototype.plusDeath = function plusDeath() {
-	this.deaths += 1;
-};
-
-User.prototype.kill = function kill() {
-	this.dead = true;
-};
-
-User.prototype.respawn = function respawn() {
-	this.dead = false;
-};
-
 User.prototype.setState = function setState(args) {
 	this.state[args.state] = args.val;
 };
