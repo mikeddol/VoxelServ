@@ -98,7 +98,7 @@
 			var game = gameMan.findGame(user.gameId);
 			if (game) {
 				if (game.updateUser(user)) {
-					socket.to(game.id).emit('user_update', game.getUsers());
+					io.to(game.id).emit('user_update', game.getUsers());
 				}
 			}
 		}
@@ -131,7 +131,6 @@
 					io.to(game.id).emit('user_update', game.getUsers());
 					setTimeout(function() {
 						game.respawnUser(data.deadId);
-						console.log("respawning user");
 						io.to(game.id).emit('user_update', game.getUsers());
 					}, 5000);
 				}
