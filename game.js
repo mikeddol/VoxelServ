@@ -82,11 +82,10 @@ Game.prototype.updatePosition = function updatePosition(user) {
 };
 
 Game.prototype.handleCollision = function handleCollision(data) {
-	if(this.collisionHolder[data.deadId]) {
-		if(data.time - this.collisionHolder[data.deadId].time <= 200) {
-			this.users[data.winId].plusScore();
-			this.users[data.deadId].plusDeath();
-			this.users[data.deadId].kill();
+	if (this.collisionHolder[data.deadId]) {
+		if (data.time - this.collisionHolder[data.deadId].time <= 200) {
+			this.killUser(data.deadId);
+			this.rewardUser(data.winId);
 			delete this.collisionHolder[data.deadId];
 			return true;
 		} else {
