@@ -114,21 +114,26 @@
 
 		function updateState(data) {
 			var game = gameMan.findGame(data.gameId);
-			if(game) {
-				if(game.setUserState(data)) {
+			if (game) {
+				if (game.setUserState(data)) {
 					socket.to(game.id).emit('player_state', data);
 				}
 			}
 		}
 
-		function collide(data){
+		function collide(data) {
 			var game = gameMan.findGame(data.gameId);
-			if(game){
+			if (game) {
 				var collision = game.handleCollision(data);
-				if(collision === 'waiting') {
+				if (collision === 'waiting') {
 					return;
 				} else if (collision === true) {
-					socket.to(game.id).emit('user_update', game.getUsers());
+					io.to(game.id).emit('user_update', game.getUsers());
+					setTimeout(function() {
+						game.respawnUser(data.deadId);
+						console.log("respawning user");
+						io.to(game.id).emit('user_update', game.getUsers());
+					}, 5000);
 				}
 			}
 		}
