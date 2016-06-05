@@ -25,10 +25,6 @@
 
 		socket.on('player_update', updateUser);
 
-		socket.on('player_position', updatePosition);
-
-		socket.on('player_state', updateState);
-
 		socket.on('collide', collide);
 
 		function registerUser(data) {
@@ -99,24 +95,6 @@
 			if (game) {
 				if (game.updateUser(user)) {
 					socket.to(game.id).emit('user_update', game.getUsers());
-				}
-			}
-		}
-
-		function updatePosition(user) {
-			var game = gameMan.findGame(user.gameId);
-			if (game) {
-				if (game.updatePosition(user)) {
-					socket.to(game.id).emit('user_update', game.getUsers());
-				}
-			}
-		}
-
-		function updateState(data) {
-			var game = gameMan.findGame(data.gameId);
-			if(game) {
-				if(game.setUserState(data)) {
-					socket.to(game.id).emit('player_state', data);
 				}
 			}
 		}

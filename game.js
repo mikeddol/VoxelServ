@@ -73,14 +73,6 @@ Game.prototype.updateUser = function updateUser(user) {
 	return false;
 };
 
-Game.prototype.updatePosition = function updatePosition(user) {
-	if (this.users[user.uuid]) {
-		this.users[user.uuid].updatePosition(user);
-		return true;
-	}
-	return false;
-};
-
 Game.prototype.handleCollision = function handleCollision(data) {
 	if(this.collisionHolder[data.deadId]) {
 		if(data.time - this.collisionHolder[data.deadId].time <= 200) {
@@ -99,17 +91,6 @@ Game.prototype.handleCollision = function handleCollision(data) {
 	return 'waiting';
 };
 
-Game.prototype.setUserState = function setUserState(data) {
-	if (this.users[data.uuid]) {
-		if (data.args.length) {
-			for (var i = 0; i < data.args.length; i++) {
-				this.users[data.uuid].setState(data.args[i]);
-			}
-			return true;
-		}
-	}
-	return false;
-};
 
 Game.prototype.getColour = function getColour(id) {
 	for (var c in this.colours) {

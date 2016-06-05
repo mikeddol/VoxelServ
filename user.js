@@ -37,10 +37,6 @@ User.prototype.update = function update(data) {
 	this.dead = data.dead;
 };
 
-User.prototype.updatePosition = function updatePosition(data) {
-	this.pos = data.pos;
-};
-
 User.prototype.plusScore = function plusScore() {
 	this.kills += 1;
 };
