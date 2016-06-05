@@ -74,11 +74,10 @@ Game.prototype.updateUser = function updateUser(user) {
 };
 
 Game.prototype.handleCollision = function handleCollision(data) {
-	if(this.collisionHolder[data.deadId]) {
-		if(data.time - this.collisionHolder[data.deadId].time <= 200) {
-			this.users[data.winId].plusScore();
-			this.users[data.deadId].plusDeath();
-			this.users[data.deadId].kill();
+	if (this.collisionHolder[data.deadId]) {
+		if (data.time - this.collisionHolder[data.deadId].time <= 200) {
+			this.killUser(data.deadId);
+			this.rewardUser(data.winId);
 			delete this.collisionHolder[data.deadId];
 			return true;
 		} else {
@@ -114,6 +113,10 @@ Game.prototype.freeColour = function freeColour(id) {
 Game.prototype.killUser = function killUser(uuid) {
 	this.users[uuid].dead = true;
 	this.users[uuid].deaths += 1;
+};
+
+Game.prototype.respawnUser = function respawnUser(uuid) {
+	this.users[uuid].dead = false;
 };
 
 Game.prototype.rewardUser = function rewardUser(uuid) {

@@ -94,19 +94,23 @@
 			var game = gameMan.findGame(user.gameId);
 			if (game) {
 				if (game.updateUser(user)) {
-					socket.to(game.id).emit('user_update', game.getUsers());
+					io.to(game.id).emit('user_update', game.getUsers());
 				}
 			}
 		}
 
 		function collide(data){
 			var game = gameMan.findGame(data.gameId);
-			if(game){
+			if (game) {
 				var collision = game.handleCollision(data);
-				if(collision === 'waiting') {
+				if (collision === 'waiting') {
 					return;
 				} else if (collision === true) {
-					socket.to(game.id).emit('user_update', game.getUsers());
+					io.to(game.id).emit('user_update', game.getUsers());
+					setTimeout(function() {
+						game.respawnUser(data.deadId);
+						io.to(game.id).emit('user_update', game.getUsers());
+					}, 5000);
 				}
 			}
 		}

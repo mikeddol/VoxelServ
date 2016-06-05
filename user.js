@@ -53,8 +53,4 @@ User.prototype.respawn = function respawn() {
 	this.dead = false;
 };
 
-User.prototype.setState = function setState(args) {
-	this.state[args.state] = args.val;
-};
-
 module.exports = User;
