@@ -3,7 +3,7 @@
 	// the app might need to have allow-origin headers
 	// once it sits on a server. Maybe.
 	var app = require('express')();
-	var http = require('https').Server(app);
+	var http = require('http').Server(app);
 	var io = require('socket.io')(http);
 	var flags = require('flags');
 
