@@ -12,7 +12,7 @@ GameManager.prototype.createGame = function addGame() {
 };
 
 GameManager.prototype.endGame = function endGame(id) {
-	if(this.games[id]) {
+	if (this.games[id]) {
 		this.games[id].time.timeEnd = Date.now();
 		return true;
 	}
@@ -24,13 +24,13 @@ GameManager.prototype.addUser = function addUser(user) {
 };
 
 GameManager.prototype.getUserGame = function getUserGame(socketid) {
-	if(this.users[socketid])
+	if (this.users[socketid])
 		return this.games[this.users[socketid].gameId];
 	return false;
 };
 
 GameManager.prototype.removeUser = function removeUser(socketid) {
-	if(this.users[socketid]){
+	if (this.users[socketid]) {
 		delete this.users[socketid];
 		return true;
 	}
@@ -39,15 +39,15 @@ GameManager.prototype.removeUser = function removeUser(socketid) {
 
 GameManager.prototype.findGame = function findGame(id) {
 	var res = this.games[id];
-	if(res) {
+	if (res) {
 		return res;
 	}
 	return false;
 };
 
 GameManager.prototype.findAvailable = function findAvailable() {
-	for(var gameId in this.games) {
-		if(!this.games[gameId].isFull()) {
+	for (var gameId in this.games) {
+		if (!this.games[gameId].isFull()) {
 			return this.games[gameId];
 		}
 	}
