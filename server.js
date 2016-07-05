@@ -3,8 +3,11 @@
 	// the app might need to have allow-origin headers
 	// once it sits on a server. Maybe.
 	var app = require('express')();
-	var http = require('http').Server(app);
-	var io = require('socket.io')(http);
+	var http = require('http').createServer(app);
+	var io = require('socket.io').listen(http);
+
+	io.set('origins', 'http://playcanvas.com:* https://playcanvas.com:* https://s3-eu-west-1.amazonaws.com:* http://s3-eu-west-1.amazonaws.com:*');
+
 	var flags = require('flags');
 
 	var GameManager = require('./game_manager');
@@ -99,7 +102,7 @@
 			}
 		}
 
-		function collide(data){
+		function collide(data) {
 			var game = gameMan.findGame(data.gameId);
 			if (game) {
 				var collision = game.handleCollision(data);
