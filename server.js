@@ -119,8 +119,5 @@
 		}
 	});
 
-	http.listen(3001, function() {
-		if (debug)
-			console.log('listening on 127.0.0.1:3001');
-	});
+	http.listen(process.env.PORT || 3001);
 })();
