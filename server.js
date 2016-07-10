@@ -6,7 +6,7 @@
 	var http = require('http').createServer(app);
 	var io = require('socket.io').listen(http);
 
-	io.set('origins', 'http://playcanvas.com:* https://playcanvas.com:* https://s3-eu-west-1.amazonaws.com:* http://s3-eu-west-1.amazonaws.com:*');
+	io.set('origins', '*:*');
 
 	var flags = require('flags');
 
