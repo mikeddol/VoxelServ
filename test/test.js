@@ -85,6 +85,14 @@ describe('Game', function() {
 		});
 	});
 
+	describe('#freeColour()', function() {
+		it('should free a colour and make it available', function() {
+			game.getColour('testId');
+			game.freeColour('testId');
+			assert.equal("", game.colours.yellow);
+		});
+	});
+
 	describe('#killUser()', function() {
 		var user = {};
 		beforeEach('add a user to the game', function() {
